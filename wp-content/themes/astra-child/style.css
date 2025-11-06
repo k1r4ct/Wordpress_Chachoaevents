@@ -1,7 +1,7 @@
 /*
 Theme Name: Astra Child - Chacoevents
 Template: astra
-Version: 1.0.0
+Version: 2.0.0
 Description: Tema personalizzato per eventi di degustazione cioccolato e thè
 Author: Chacoevents Team
 Text Domain: chacoevents
@@ -9,6 +9,19 @@ Text Domain: chacoevents
 
 /* ========== IMPORT FONTS ========== */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+/* ========== VARIABILI CSS ========== */
+:root {
+    --sidebar-width: 280px;
+    --toggle-size: 50px;
+    --hamburger-color: #3B464F;
+    --sidebar-bg: #ffffff;
+    --sidebar-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    --accent-brown: #8B7355;
+    --cream-bg: #F6EBD8;
+    --dark-text: #3B464F;
+    --transition-speed: 0.3s;
+}
 
 /* ========== RESET & BASE ========== */
 * {
@@ -21,6 +34,7 @@ body {
     font-family: 'Poppins', sans-serif !important;
     background-color: #FAF8F5 !important;
     color: #333 !important;
+    transition: margin-left var(--transition-speed) ease;
 }
 
 /* Nascondi header default di Astra */
@@ -31,133 +45,132 @@ body {
     display: none !important;
 }
 
-/* ========== HAMBURGER MENU BUTTON ========== */
+/* ========== HAMBURGER MENU PRINCIPALE ========== */
 .hamburger-menu {
     position: fixed;
     top: 50%;
-    left: 0;
+    left: 20px;
     transform: translateY(-50%);
-    width: 45px;
-    height: 80px;
-    background-color: #3B464F;
+    width: var(--toggle-size);
+    height: var(--toggle-size);
+    background: white;
     border: none;
-    border-radius: 0 15px 15px 0;
+    border-radius: 12px;
     cursor: pointer;
-    z-index: 999999;
+    z-index: 1001;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 6px;
-    box-shadow: 3px 0 12px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
+    gap: 5px;
+    box-shadow: var(--sidebar-shadow);
+    transition: all var(--transition-speed) ease;
 }
 
 .hamburger-menu:hover {
-    background-color: #8B7355;
-    width: 50px;
+    background: var(--cream-bg);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.hamburger-menu.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-50%) translateX(-100px);
 }
 
 .hamburger-menu span {
     display: block;
-    width: 25px;
+    width: 24px;
     height: 3px;
-    background-color: #F6EBD8;
+    background-color: var(--hamburger-color);
     border-radius: 2px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-speed) ease;
 }
 
-.hamburger-menu:hover span {
-    background-color: #ffffff;
-}
-
-/* Nascondi hamburger quando sidebar è aperta */
-.hamburger-menu.active {
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* ========== SIDEBAR LATERALE A SCOMPARSA ========== */
+/* ========== SIDEBAR PRINCIPALE ========== */
 .custom-sidebar {
     position: fixed;
-    left: -280px;
+    left: 0;
     top: 0;
-    width: 280px;
+    width: var(--sidebar-width);
     height: 100vh;
-    background: linear-gradient(to bottom, #ffffff 0%, #f9f9f9 100%);
-    box-shadow: 3px 0 15px rgba(0,0,0,0.08);
+    background: linear-gradient(to bottom, #ffffff 0%, #fafafa 100%);
+    transform: translateX(-100%);
+    transition: transform var(--transition-speed) ease;
+    z-index: 1000;
+    box-shadow: var(--sidebar-shadow);
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    z-index: 9999;
-    transition: left 0.4s ease;
 }
 
 .custom-sidebar.active {
-    left: 0;
+    transform: translateX(0);
 }
 
-/* ========== LINGUETTA DI CHIUSURA SULLA SIDEBAR ========== */
+/* ========== TOGGLE BUTTON (Linguetta al lato della sidebar) ========== */
 .sidebar-toggle {
-    position: absolute;
+    position: fixed;
     top: 50%;
-    right: -45px; /* Posizionata fuori dal bordo destro */
-    transform: translateY(-50%);
-    width: 45px;
+    left: var(--sidebar-width);
+    transform: translateY(-50%) translateX(-100%);
+    width: var(--toggle-size);
     height: 80px;
-    background-color: #3B464F;
+    background: var(--accent-brown);
     border: none;
-    border-radius: 0 15px 15px 0;
+    border-radius: 0 12px 12px 0;
     cursor: pointer;
+    z-index: 999;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 6px;
-    box-shadow: 3px 0 12px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
+    gap: 5px;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    transition: all var(--transition-speed) ease;
     opacity: 0;
-    pointer-events: none;
+    visibility: hidden;
 }
 
-/* Mostra la linguetta quando sidebar è aperta */
-.custom-sidebar.active .sidebar-toggle {
+/* Mostra il toggle quando la sidebar è attiva */
+.custom-sidebar.active ~ .sidebar-toggle,
+.sidebar-open .sidebar-toggle {
     opacity: 1;
-    pointer-events: auto;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0);
 }
 
 .sidebar-toggle:hover {
-    background-color: #8B7355;
-    width: 50px;
-    right: -50px;
+    background: var(--dark-text);
+    width: calc(var(--toggle-size) + 8px);
+    padding-right: 4px;
 }
 
+/* Linee hamburger nel toggle */
 .sidebar-toggle span {
-    display: block;
-    width: 25px;
+    width: 22px;
     height: 3px;
-    background-color: #F6EBD8;
+    background: white;
     border-radius: 2px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-speed) ease;
+    display: block;
 }
 
-/* Animazione X per la linguetta di chiusura */
-.sidebar-toggle span:nth-child(1) {
-    transform: rotate(45deg) translate(8px, 8px);
+/* Animazione X quando hover */
+.sidebar-toggle:hover span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
 }
 
-.sidebar-toggle span:nth-child(2) {
+.sidebar-toggle:hover span:nth-child(2) {
     opacity: 0;
+    transform: translateX(-10px);
 }
 
-.sidebar-toggle span:nth-child(3) {
-    transform: rotate(-45deg) translate(8px, -8px);
+.sidebar-toggle:hover span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
 }
 
-.sidebar-toggle:hover span {
-    background-color: #ffffff;
-}
-
-/* Overlay quando sidebar è aperta */
+/* ========== OVERLAY ========== */
 .sidebar-overlay {
     position: fixed;
     top: 0;
@@ -165,10 +178,10 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
-    z-index: 9998;
+    z-index: 998;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all var(--transition-speed) ease;
 }
 
 .sidebar-overlay.active {
@@ -176,18 +189,18 @@ body {
     visibility: visible;
 }
 
-/* Logo Area */
+/* ========== SIDEBAR LOGO AREA ========== */
 .custom-sidebar-logo {
     padding: 30px 25px;
     text-align: center;
-    border-bottom: 2px solid #F5EBD8;
-    position: relative;
+    border-bottom: 2px solid var(--cream-bg);
+    background: white;
 }
 
 .custom-sidebar-logo h1 {
     font-family: 'Playfair Display', serif;
     font-size: 1.8em;
-    color: #3B464F;
+    color: var(--dark-text);
     font-weight: 700;
     letter-spacing: 1px;
     margin: 0;
@@ -195,7 +208,7 @@ body {
 
 .custom-sidebar-logo .tagline {
     font-size: 0.85em;
-    color: #8B7355;
+    color: var(--accent-brown);
     margin-top: 8px;
     font-weight: 300;
 }
@@ -205,56 +218,79 @@ body {
     height: auto;
 }
 
-/* Navigation Menu */
+/* ========== NAVIGATION MENU ========== */
 .custom-sidebar-nav {
     flex: 1;
     padding: 40px 20px;
-    overflow-y: auto;
-    background: #fffbf3;
+    background: #fafafa;
 }
 
-.custom-sidebar-nav ul {
+.custom-sidebar-nav ul,
+.sidebar-menu-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
 .custom-sidebar-nav li {
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .custom-sidebar-nav a {
     display: block;
-    padding: 16px 24px;
-    background-color: #F6EBD8;
-    color: #3B464F;
+    padding: 14px 20px;
+    background-color: white;
+    color: var(--dark-text);
     text-decoration: none;
     border-radius: 10px;
     font-weight: 500;
     font-size: 0.95em;
     transition: all 0.3s ease;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.custom-sidebar-nav a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: var(--accent-brown);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
 }
 
 .custom-sidebar-nav a:hover {
-    background-color: #8B7355;
-    color: #ffffff;
-    transform: translateX(8px);
-    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.3);
+    background-color: var(--cream-bg);
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(139, 115, 85, 0.2);
+}
+
+.custom-sidebar-nav a:hover::before {
+    transform: translateX(0);
 }
 
 .custom-sidebar-nav .current-menu-item a,
 .custom-sidebar-nav .current_page_item a {
-    background-color: #8B7355;
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--accent-brown) 0%, #6d5637 100%);
+    color: white;
     font-weight: 600;
 }
 
-/* Bottom Bar in Sidebar */
+.custom-sidebar-nav .current-menu-item a::before {
+    transform: translateX(0);
+    background: white;
+}
+
+/* ========== SIDEBAR FOOTER ========== */
 .custom-sidebar-footer {
-    background-color: #3B464F;
+    background: var(--dark-text);
     padding: 25px 20px;
     text-align: center;
+    margin-top: auto;
 }
 
 .custom-sidebar-footer .social-icons {
@@ -264,37 +300,39 @@ body {
 }
 
 .custom-sidebar-footer .social-icons a {
-    width: 45px;
-    height: 45px;
-    background-color: #F5EBD8;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #3B464F;
+    color: white;
     text-decoration: none;
     transition: all 0.3s ease;
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 
 .custom-sidebar-footer .social-icons a:hover {
-    background-color: #8B7355;
-    color: #ffffff;
+    background-color: var(--accent-brown);
+    border-color: var(--accent-brown);
     transform: translateY(-3px) scale(1.1);
 }
 
-.custom-sidebar-footer .social-icons svg {
-    width: 20px;
-    height: 20px;
-    fill: currentColor;
-}
-
-/* ========== MAIN CONTENT AREA ========== */
+/* ========== MAIN CONTENT ADJUSTMENTS ========== */
 .site-content {
     margin-left: 0 !important;
     min-height: 100vh;
     padding: 0 !important;
-    transition: margin-left 0.4s ease;
+    transition: margin-left var(--transition-speed) ease;
+}
+
+/* Sposta il contenuto quando la sidebar è aperta (desktop) */
+@media (min-width: 1024px) {
+    .sidebar-open .site-content {
+        margin-left: var(--sidebar-width) !important;
+    }
 }
 
 #content,
@@ -304,368 +342,168 @@ body {
     margin: 0 !important;
 }
 
-/* Hero Banner */
-.hero-banner {
-    background: linear-gradient(135deg, #F5EBD8 0%, #E8D5BA 100%);
-    padding: 120px 60px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-banner::before {
-    content: '☕';
-    position: absolute;
-    font-size: 15em;
-    opacity: 0.08;
-    right: -50px;
-    top: -50px;
-    transform: rotate(-15deg);
-}
-
-.hero-banner::after {
-    content: '🍫';
-    position: absolute;
-    font-size: 12em;
-    opacity: 0.08;
-    left: -30px;
-    bottom: -40px;
-    transform: rotate(15deg);
-}
-
-.hero-banner h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 4em;
-    color: #3B464F;
-    margin-bottom: 20px;
-    font-weight: 700;
-    position: relative;
-    z-index: 1;
-}
-
-.hero-banner p {
-    font-size: 1.4em;
-    color: #5A4A3A;
-    max-width: 700px;
-    margin: 0 auto;
-    line-height: 1.6;
-    position: relative;
-    z-index: 1;
-}
-
-.hero-banner .cta-button {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 18px 45px;
-    background-color: #3B464F;
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 600;
-    font-size: 1.1em;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 20px rgba(59, 70, 79, 0.3);
-    position: relative;
-    z-index: 1;
-}
-
-.hero-banner .cta-button:hover {
-    background-color: #8B7355;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(139, 115, 85, 0.4);
-}
-
-/* Content Sections */
-.content-section {
-    padding: 80px 60px;
-}
-
-.content-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.5em;
-    color: #3B464F;
-    margin-bottom: 40px;
-    text-align: center;
-}
-
-/* Event Cards Grid */
-.event-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 50px;
-}
-
-.event-card {
-    background: #ffffff;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-}
-
-.event-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-}
-
-.event-card-image {
-    width: 100%;
-    height: 250px;
-    background: linear-gradient(135deg, #8B7355 0%, #5A4A3A 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 5em;
-}
-
-.event-card-content {
-    padding: 30px;
-}
-
-.event-card-content h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.5em;
-    color: #3B464F;
-    margin-bottom: 15px;
-}
-
-.event-card-content p {
-    color: #666;
-    line-height: 1.7;
-    margin-bottom: 20px;
-}
-
-.event-card-content .btn {
-    display: inline-block;
-    padding: 12px 30px;
-    background-color: #F6EBD8;
-    color: #3B464F;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.event-card-content .btn:hover {
-    background-color: #8B7355;
-    color: #ffffff;
-}
-
-/* Gallery Section */
-.gallery-section {
-    background-color: #ffffff;
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 50px;
-}
-
-.gallery-item {
-    height: 300px;
-    background: linear-gradient(135deg, #F5EBD8 0%, #8B7355 100%);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 4em;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.gallery-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
-
-/* ========== FOOTER ========== */
-.site-footer {
-    background-color: #3B464F !important;
-    color: #ffffff !important;
-    padding: 60px !important;
-    text-align: center;
-    margin-left: 0 !important;
-}
-
-.site-footer h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: #F5EBD8;
-}
-
-.site-footer p {
-    font-size: 1.1em;
-    line-height: 1.8;
-    max-width: 600px;
-    margin: 0 auto 30px;
-    opacity: 0.9;
-    color: #ffffff;
-}
-
-.site-footer .footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-}
-
-.site-footer .footer-links a {
-    color: #F5EBD8;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.site-footer .footer-links a:hover {
-    color: #ffffff;
-    text-decoration: underline;
-}
-
-.site-footer .copyright {
-    margin-top: 40px;
-    padding-top: 30px;
-    border-top: 1px solid rgba(255,255,255,0.2);
-    opacity: 0.7;
-    font-size: 0.9em;
-}
-
-.site-footer .copyright p {
-    margin: 0;
-}
-
-/* ========== RESPONSIVE ========== */
+/* ========== RESPONSIVE DESIGN ========== */
 @media (max-width: 1024px) {
-    .custom-sidebar {
-        width: 260px;
-        left: -260px;
+    :root {
+        --sidebar-width: 260px;
     }
     
-    .custom-sidebar.active {
-        left: 0;
+    .hamburger-menu {
+        top: 20px;
+        left: 20px;
+        transform: none;
+    }
+    
+    .hamburger-menu.hidden {
+        transform: translateX(-100px);
     }
     
     .sidebar-toggle {
-        right: -45px;
-    }
-    
-    .hero-banner h1 {
-        font-size: 3em;
+        top: 50%;
+        transform: translateY(-50%);
     }
 }
 
 @media (max-width: 768px) {
-    /* Sidebar più stretta su mobile */
-    .custom-sidebar {
-        width: 240px;
-        left: -240px;
+    :root {
+        --sidebar-width: 250px;
+        --toggle-size: 45px;
     }
     
-    .custom-sidebar.active {
-        left: 0;
+    .hamburger-menu {
+        top: 15px;
+        left: 15px;
+        width: var(--toggle-size);
+        height: var(--toggle-size);
     }
     
-    /* Logo più piccolo */
+    .sidebar-toggle {
+        width: var(--toggle-size);
+        height: 70px;
+    }
+    
     .custom-sidebar-logo {
         padding: 25px 20px;
     }
     
     .custom-sidebar-logo h1 {
-        font-size: 1.6em;
+        font-size: 1.5em;
     }
     
-    /* Menu items più compatti */
     .custom-sidebar-nav {
         padding: 30px 15px;
     }
     
     .custom-sidebar-nav a {
-        padding: 14px 20px;
+        padding: 12px 18px;
         font-size: 0.9em;
     }
     
-    /* Hamburger menu in alto su mobile */
-    .hamburger-menu {
-        top: 15px;
-        left: 15px;
-        transform: none;
-        width: 45px;
-        height: 45px;
-    }
-    
-    /* Linguetta di chiusura adattata */
-    .sidebar-toggle {
-        width: 40px;
-        height: 70px;
-        right: -40px;
-    }
-    
-    .sidebar-toggle:hover {
-        width: 45px;
-        right: -45px;
-    }
-
-    .hero-banner {
-        padding: 60px 30px;
-    }
-
-    .hero-banner h1 {
-        font-size: 2.5em;
-    }
-
-    .hero-banner p {
-        font-size: 1.1em;
-    }
-
-    .content-section {
-        padding: 50px 30px;
-    }
-
-    .event-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .site-footer {
-        padding: 40px 20px !important;
+    .site-content {
+        margin-left: 0 !important;
     }
 }
 
 @media (max-width: 480px) {
-    /* Sidebar ancora più stretta su schermi molto piccoli */
-    .custom-sidebar {
-        width: 220px;
-        left: -220px;
+    :root {
+        --sidebar-width: 85vw;
+        --toggle-size: 40px;
     }
     
-    .custom-sidebar-logo h1 {
-        font-size: 1.4em;
-    }
-    
-    /* Social icons più piccole */
-    .custom-sidebar-footer .social-icons a {
-        width: 38px;
-        height: 38px;
+    .hamburger-menu span,
+    .sidebar-toggle span {
+        width: 20px;
+        height: 2px;
     }
     
     .sidebar-toggle {
-        width: 35px;
         height: 60px;
-        right: -35px;
     }
     
-    .sidebar-toggle span {
-        width: 20px;
+    .custom-sidebar-logo h1 {
+        font-size: 1.3em;
+    }
+    
+    .custom-sidebar-footer .social-icons a {
+        width: 35px;
+        height: 35px;
+        font-size: 1em;
+    }
+}
+
+/* ========== ANIMAZIONI AGGIUNTIVE ========== */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.custom-sidebar.active {
+    animation: slideIn 0.3s ease forwards;
+}
+
+.sidebar-overlay.active {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* ========== ACCESSIBILITÀ ========== */
+.sidebar-toggle:focus,
+.hamburger-menu:focus {
+    outline: 2px solid var(--accent-brown);
+    outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .custom-sidebar {
+        border-right: 2px solid var(--dark-text);
+    }
+    
+    .sidebar-toggle,
+    .hamburger-menu {
+        border: 2px solid var(--dark-text);
+    }
+}
+
+/* Dark mode support (opzionale) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --sidebar-bg: #2a2a2a;
+        --hamburger-color: #ffffff;
+        --cream-bg: #3a3a3a;
+        --dark-text: #f0f0f0;
+    }
+    
+    body {
+        background-color: #1a1a1a !important;
+        color: #f0f0f0 !important;
+    }
+    
+    .custom-sidebar {
+        background: linear-gradient(to bottom, #2a2a2a 0%, #1f1f1f 100%);
+    }
+    
+    .hamburger-menu {
+        background: #333;
+    }
+    
+    .custom-sidebar-nav a {
+        background-color: #333;
+        color: #f0f0f0;
     }
 }
 
@@ -680,4 +518,9 @@ body {
 
 .mb-50 {
     margin-bottom: 50px;
+}
+
+/* Smooth scrolling per tutta la pagina */
+html {
+    scroll-behavior: smooth;
 }
